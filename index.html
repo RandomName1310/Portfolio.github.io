@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pedro Barbosa Portfolio :0</title>
+<style>
+    /* General */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #0a192f;
+        color: #ffffff;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 380vh; 
+        overflow-x: hidden;
+        
+        box-shadow: inset -50px 40px 60px  rgba(0, 153, 255, 0.25),
+                    inset 50px 40px 60px  rgba(0, 153, 255, 0.25)
+             
+    }
+
+    body.lightGreen {
+    box-shadow: inset -50px 40px 60px rgba(144, 238, 144, 0.25), 
+                inset 50px 40px 60px rgba(144, 238, 144, 0.25);
+    }
+
+    body.lightBlue {
+        box-shadow: inset -50px 40px 60px rgba(173, 216, 230, 0.25), 
+                    inset 50px 40px 60px rgba(173, 216, 230, 0.25);
+    }
+
+    body.purple {
+        box-shadow: inset -50px 40px 60px rgba(128, 0, 128, 0.25), 
+                    inset 50px 40px 60px rgba(128, 0, 128, 0.25);
+    }
+
+    body.blue {
+        box-shadow: inset -50px 40px 60px rgba(0, 0, 255, 0.25), 
+                    inset 50px 40px 60px rgba(0, 0, 255, 0.25);
+    }
+
+    
+
+            
+
+    /* Header */
+    header {
+        width: 100%;
+        background-color: #172a45;
+        padding: 15px 0;
+        text-align: center;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 1.8rem;
+        color: #ffffff;
+    }
+
+    /* Menu */
+    .menu {
+        display: flex;
+        gap: 30px;
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+
+    .menu a {
+        color: #ffffff;
+        text-decoration: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .menu a:hover {
+        background-color: #0e1d36;
+    }
+
+    /* Introduction */
+    .intro-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        margin-top: 100px;
+    }
+
+    #ImageBox {
+        width: 300px;
+        height: 300px;
+        border-radius: 5%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 2rem;
+        cursor: pointer;
+        opacity: 0;
+        transform: translateY(50%);
+        transition: transform 0.5s ease, opacity 0.5s ease;
+        position: absolute;
+
+        box-shadow: inset -50px 50px 60px rgba(0, 0, 0, 0.2),
+                    inset 50px -50px 60px rgba(255, 255, 255, 0.25),
+                    0 50px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    #ImageBox::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 5%;
+        background-color: inherit;
+        opacity: 0.3;
+        transform: scale(0);
+        z-index: -1;
+        transition: transform 0.3s ease;
+    }
+
+    #ImageBox:hover::before {
+        transform: scale(1.1);
+    }
+
+    #ImageBox.animateSphere {
+        animation-name: Appear;
+        animation-duration: 2s;
+        animation-fill-mode: forwards;
+    }
+
+
+    #TextBox {
+        width: 500px;
+        height: 300px;
+        border-radius: 5%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 2rem;
+        opacity: 0;
+        background-color: #0b1e3c;
+        transform: translateY(50%);
+        transition: transform 0.5s ease, opacity 0.5s ease;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #092652;
+        position: absolute;
+    }
+
+
+    #TextBox.animateSphere {
+        animation-name: Appear;
+        animation-duration: 2s;
+        animation-fill-mode: forwards;
+    }
+
+
+    #TextBox a{
+      position: absolute;
+      font-size: 25px;
+      top: 50%;
+    }
+
+    #TextBox t{
+      position: absolute;
+      font-size: 35px;
+      top: 10%;
+    }
+
+
+    .lightBoxImage
+    {
+        width: 90%;
+        height: 90%;
+        border-color: #0a192f;
+        border-radius: 20px;
+    }
+
+
+
+    /* Lightbox */
+    .lightbox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .lightbox-content {
+        background-color: #1c3353;
+        color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 80%;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(-100%);
+        transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    .lightbox:target {
+        display: flex;
+        --body-box-shadow: inset -50px 40px 60px  rgba(0, 1, 1, 0.25),
+                           inset 50px 40px 60px  rgba(0, 1, 1, 0.25)
+    }
+
+    .lightbox:target .lightbox-content {
+        animation-name: LightboxAppear;
+        animation-duration: 1s;
+        animation-fill-mode: forwards;
+        --body-box-shadow: inset -50px 40px 60px  rgba(0, 1, 1, 0.25),
+                           inset 50px 40px 60px  rgba(0, 1, 1, 0.25)
+    }
+
+    .close-button {
+        color: #ffffff;
+        position: absolute;
+        top: 6%;
+        left: 400px;
+        font-size: 20px;
+    }
+
+    
+
+    /* Text Animation */
+    .typing-container {
+        top: 50%;
+        font-size: 4rem;
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        border-right: 2px solid white;
+        animation: typing 4s steps(30, end) forwards, blink-caret 0.75s step-end infinite;
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+     /* Animations */
+     @keyframes typing {
+        from { width: 0; }
+        to { width: 24ch; } 
+    }
+
+    @keyframes blink-caret {
+        from, to { border-color: transparent; }
+        50% { border-color: white; }
+    }
+    @keyframes Appear {
+        from {
+            opacity: 0;
+            transform: translateX(var(--start-x));
+        }
+        to {
+            opacity: 1;
+            transform: translateX(var(--end-x));
+        }
+    }
+    @keyframes LightboxAppear {
+        from {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* Sphere Colors */
+    .Movable.blue { background-color: #3498db; }
+    .Movable.dark-blue { background-color: #0602ff; }
+    .Movable.purple { background-color: #7700ff; }
+    .Movable.light-blue { background-color: #00b3ff; }
+
+    /* Media Queries */
+    @media (max-width: 768px) {
+        .intro-container {
+            margin-top: 50px;
+        }
+        .sphere {
+            width: 150px;
+            height: 150px;
+        }
+    }
+
+   
+
+   
+</style>
+</head>
+<body>
+
+    <header>
+        <h1>Pedro Barbosa Portfolio</h1>
+        <nav class="menu">
+            <a href="#intro">Introduction</a>
+            <a href="#about">About Me</a>
+            <a href="#projects">Projects</a>
+        </nav>
+    </header>
+    
+    <div class="IntroContainer">
+        <a href="#lightbox1">
+            <div id="ImageBox" class="Movable" style="top: 100%; background-color: #3498db;" data-start-offset="-250%" data-x-offset="-110%">
+                <img src="https://via.placeholder.com/400" class="lightBoxImage">
+            </div>
+        </a>
+        <a href="#lightbox2">
+            <div id="ImageBox" class="Movable" style="top: 150%; background-color: #0602ff;" data-start-offset="250%" data-x-offset="10%">
+                <img src="https://via.placeholder.com/400" class="lightBoxImage">
+            </div>
+        </a>
+        <a href="#lightbox3">
+            <div id="ImageBox" class="Movable" style="top: 200%; background-color: #7700ff;" data-start-offset="-250%" data-x-offset="-110%">
+                <img src="https://via.placeholder.com/400" class="lightBoxImage">
+            </div>
+        </a>
+
+        
+        <div id="TextBox" class="Movable" style="top: 100%;" data-start-offset="250%" data-x-offset="10%">
+            <t>TITLE</t>
+            <a>TEST</a>
+        </div>
+        
+        <div id="TextBox" class="Movable" style="top: 150%;" data-start-offset="-250%" data-x-offset="-110%">
+            <t>TITLE</t>
+            <a>TEST</a>
+        </div>
+    
+        <div id="TextBox" class="Movable" style="top: 200%;" data-start-offset="250%" data-x-offset="10%">
+            <t>TITLE</t>
+            <a>TEST</a>
+        </div>
+      
+        
+    </div>
+    
+    <div id="lightbox1" class="lightbox">
+        <div class="lightbox-content">
+            <a href="#close" class="close-button">X</a>
+            <p>This is a sphere with color: #3498db</p>
+            <img src="https://via.placeholder.com/400">
+        </div>
+    </div>
+    
+    <div id="lightbox2" class="lightbox">
+        <div class="lightbox-content">
+            <a href="#close" class="close-button">X</a>
+            <p>This is a sphere with color: #0602ff</p>
+            <img src="https://via.placeholder.com/400">
+        </div>
+    </div>
+    
+    <div id="lightbox3" class="lightbox">
+        <div class="lightbox-content">
+            <a href="#close" class="close-button">X</a>
+            <p>This is a sphere with color: #7700ff</p>
+            <img src="https://via.placeholder.com/400">
+        </div>
+    </div>
+    
+    <div id="lightbox4" class="lightbox">
+        <div class="lightbox-content">
+            <a href="#close" class="close-button">X</a>
+            <p>This is a sphere with color: #00b3ff</p>
+            <img src="https://via.placeholder.com/400">
+        </div>
+    </div>
+
+
+    <div class="ProjectsContainer">
+
+    </div>
+    
+    <div class="typing-container">Welcome to my portfolio!</div>
+
+    
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const spheres = document.querySelectorAll('.Movable');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animateSphere');
+                    entry.target.style.setProperty('--start-x', entry.target.getAttribute('data-start-offset'));
+                    entry.target.style.setProperty('--end-x', entry.target.getAttribute('data-x-offset'));
+                }
+            });
+        }, {
+            threshold: 0.6 
+        });
+
+        spheres.forEach(sphere => {
+            observer.observe(sphere);
+        });
+    });
+
+</script>
+</body>
+</html>
